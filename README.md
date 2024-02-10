@@ -129,7 +129,7 @@ Open "Developer Command Prompt for VS 2019"
 1. Open StartMenu and search for "Developer Command Prompt for VS 2019"
 2. Follow these steps:
 ```
-cd C:\Users\USER_NAME\PATH_TO_EVRPROGPOWMINER\meowpowminer
+cd C:\Users\USER_NAME\PATH_TO_MEOWPOWMINER\meowpowminer
 git submodule update --init --recursive
 mkdir build
 cd build
