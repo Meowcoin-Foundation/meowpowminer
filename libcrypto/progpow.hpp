@@ -15,15 +15,15 @@
 
 namespace progpow
 {
-constexpr static uint32_t kPeriodLength{3};         // Number of blocks before change of the random program
+constexpr static uint32_t kPeriodLength{6};         // Number of blocks before change of the random program
 //constexpr static uint32_t kPeriodLength{1};         // Number of blocks before change of the random program
 constexpr static uint32_t kLanes{16};               // lanes that work together calculating a hash
-constexpr static uint32_t kRegs{32};                // uint32 registers per lane
+constexpr static uint32_t kRegs{16};                // uint32 registers per lane
 constexpr static uint32_t kDag_loads{4};            // uint32 loads from the DAG per lane
-constexpr static uint32_t kCache_bytes{16 * 1024};  // size of the cached portion of the DAG
+constexpr static uint32_t kCache_bytes{8 * 1024};  // size of the cached portion of the DAG
 constexpr static uint32_t kDag_count{64};           // DAG accesses, also the number of loops executed
-constexpr static uint32_t kCache_count{11};         // random cache accesses per loop
-constexpr static uint32_t kMath_count{18};          // random math instructions per loop
+constexpr static uint32_t kCache_count{6};         // random cache accesses per loop
+constexpr static uint32_t kMath_count{9};          // random math instructions per loop
 
 constexpr static uint32_t kWords_per_lane{sizeof(ethash::hash2048) / (sizeof(uint32_t) * kLanes)};
 
