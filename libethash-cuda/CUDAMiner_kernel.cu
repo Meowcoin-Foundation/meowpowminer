@@ -30,7 +30,7 @@ __device__ __constant__ const uint32_t keccakf_rndc[24] = {
     0x0000800a, 0x8000000a, 0x80008081, 0x00008080, 0x80000001, 0x80008008
 };
 
-__device__ __constant__ const uint32_t evrmore_rndc[15] = {
+__device__ __constant__ const uint32_t meowcoin_rndc[15] = {
         0x0000004D, //M
         0x00000045, //E
         0x0000004F, //O
@@ -215,9 +215,9 @@ progpow_search(
         state[9] = nonce >> 32;
 //        state[10] = 0x00000001;
 //       state[18] = 0x80008081;
-        // 3rd apply evrmore input constraints
+        // 3rd apply meowcoin input constraints
         for (int i = 10; i < 25; i++)
-            state[i] = evrmore_rndc[i-10];
+            state[i] = meowcoin_rndc[i-10];
 
         // Run intial keccak round
         keccak_f800(state);
@@ -281,9 +281,9 @@ progpow_search(
 
 //        state[17] = 0x00000001;
 //        state[24] = 0x80008081;
-        // 3rd apply evrmore input constraints
+        // 3rd apply meowcoin input constraints
         for (int i = 16; i < 25; i++)
-            state[i] = evrmore_rndc[i - 16];
+            state[i] = meowcoin_rndc[i - 16];
 
         // Run keccak loop
         keccak_f800(state);

@@ -20,7 +20,7 @@ HunterGate(
 )
 
 
-project(evrprogpowminer)
+project(meowpowminer)
 set(PROJECT_VERSION 1.3.0)
 
 
@@ -103,7 +103,7 @@ if (APICORE)
 	add_subdirectory(libapicore)
 endif()
 
-add_subdirectory(evrprogpowminer)
+add_subdirectory(meowpowminer)
 
 
 if(WIN32)

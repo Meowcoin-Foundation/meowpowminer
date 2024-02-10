@@ -216,7 +216,7 @@ bool CPUMiner::initEpoch_internal()
    Miner should stop working on the current block
    This happens if a
      * new work arrived                       or
-     * miner should stop (eg exit evrprogpowminer)   or
+     * miner should stop (eg exit meowpowminer)   or
      * miner should pause
 */
 void CPUMiner::kick_miner()
