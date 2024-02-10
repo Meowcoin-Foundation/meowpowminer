@@ -158,16 +158,16 @@ ProgPoW can be tuned using the following parameters.  The proposed settings have
 
 The value of these parameters has been tweaked to use 0.9.4 specs with a PROGPOW_PEROD of 3 to fit Meowcoin's blocktimes.  See [this medium post](https://medium.com/@ifdefelse/progpow-progress-da5bb31a651b) for details.
 
-| Parameter             | 0.9.2 | 0.9.3 | 0.9.4 |
-|-----------------------|-------|-------|--------|
-| `PROGPOW_PERIOD`      | `50`  | `10`  |  `3`   |
-| `PROGPOW_LANES`       | `16`  | `16`  |  `16`  |
-| `PROGPOW_REGS`        | `32`  | `32`  |  `32`  |
-| `PROGPOW_DAG_LOADS`   | `4`   | `4`   |  `4`   |
-| `PROGPOW_CACHE_BYTES` | `16x1024` | `16x1024` | `16x1024` |
-| `PROGPOW_CNT_DAG`     | `64`  | `64`  | `64`  |
-| `PROGPOW_CNT_CACHE`   | `12`  | `11`  | `11`  |
-| `PROGPOW_CNT_MATH`    | `20`  | `18`  | `18`  |
+| Parameter             | 0.9.2 | 0.9.3 | 0.9.4 | MeowPow |
+|-----------------------|-------|-------|--------|--------|
+| `PROGPOW_PERIOD`      | `50`  | `10`  |  `3`   |   `6`  |
+| `PROGPOW_LANES`       | `16`  | `16`  |  `16`  |  `16`  |
+| `PROGPOW_REGS`        | `32`  | `32`  |  `32`  |  `16`  |
+| `PROGPOW_DAG_LOADS`   | `4`   | `4`   |  `4`   |  `4`   |
+| `PROGPOW_CACHE_BYTES` | `16x1024` | `16x1024` | `16x1024` | `8x1024`|
+| `PROGPOW_CNT_DAG`     | `64`  | `64`  | `64`  |  `64`   |
+| `PROGPOW_CNT_CACHE`   | `12`  | `11`  | `11`  |  `6`    |
+| `PROGPOW_CNT_MATH`    | `20`  | `18`  | `18`  |  `9`    |
 
 Epoch length = 12000 blocks
 
@@ -180,6 +180,7 @@ Ordered alphabetically. [Contributors statistics since 2015-08-20].
 
 | Name                  | Contact                                                      |     |
 | --------------------- | ------------------------------------------------------------ | --- |
+| Zachary Price         | [@zachchan105](https://github.com/zachchan105)               | LTC: ltc1q46x3m5rwywa6ymfzqacmzasnqeua6umt6n96w6|
 | Hans Schmidt          | [@hans-schmidt](https://github.com/hans-schmidt)             | --- |
 | Jeremy Anderson       | [@Blondfrogs](https://github.com/Blondfrogs)                 | --- |
 | Traysi                | [@traysi](https://github.com/traysi)                         | --  |
