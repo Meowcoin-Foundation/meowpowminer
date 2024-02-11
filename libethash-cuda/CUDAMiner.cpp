@@ -500,12 +500,7 @@ void CUDAMiner::compileKernel(uint64_t period_seed, uint64_t dag_elms, CUfunctio
 
 void CUDAMiner::search(uint8_t const* header, uint64_t target, uint64_t start_nonce, const dev::eth::WorkPackage& w)
 {
-    set_header(*reinterpret_cast<hash32_t const*>(header));
-    if (m_current_target != target)
-    {
-        set_target(target);
-        m_current_target = target;
-    }
+    set_target(6);
 
     // If upper 64 bits of target are 0xffffffffffffffff then any nonce would
     // be considered valid by GPU. Skip job.
