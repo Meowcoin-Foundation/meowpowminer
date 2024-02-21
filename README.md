@@ -3,7 +3,7 @@
 Meowpowminer is a fork of Ravencoin's [kawpowminer ](https://github.com/RavenCommunity/kawpowminer). Like kawpowminer, it is a derivative of Ethash enhanced with [Programmable Proof of Work](https://github.com/ifdefelse/progpow) for ASIC and FPGA resistance.
 
 Compared to kawpowminer, meowpowminer has the following differences:
-* Starting DAG size at block #1 is 3GigaBytes
+* DAG size at epoch 110 is >4GigaBytes
 * EPOCH duration is 12000 blocks
 * meowpowminer supports direct solo mining to meowcoind/meowcoin-qt without needing a stratum proxy
 * the random starting seeds are slightly different for uniqueness
