@@ -164,7 +164,7 @@ The value of these parameters has been tweaked to use 0.9.4 specs with a PROGPOW
 | `PROGPOW_LANES`       | `16`  | `16`  |  `16`  |  `16`  |
 | `PROGPOW_REGS`        | `32`  | `32`  |  `32`  |  `16`  |
 | `PROGPOW_DAG_LOADS`   | `4`   | `4`   |  `4`   |  `4`   |
-| `PROGPOW_CACHE_BYTES` | `16x1024` | `16x1024` | `16x1024` | `8x1024`|
+| `PROGPOW_CACHE_BYTES` | `16x1024` | `16x1024` | `16x1024` | `16x1024`|
 | `PROGPOW_CNT_DAG`     | `64`  | `64`  | `64`  |  `64`   |
 | `PROGPOW_CNT_CACHE`   | `12`  | `11`  | `11`  |  `6`    |
 | `PROGPOW_CNT_MATH`    | `20`  | `18`  | `18`  |  `9`    |
