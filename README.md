@@ -116,6 +116,9 @@ cmake .. -DETHASHCUDA=ON -DETHASHCL=ON -DAPICORE=ON
 make -sj $(nproc)
 ```
 
+Manually define CUDA stuff like this:
+` cmake .. -DETHASHCUDA=ON -DETHASHCL=ON -DAPICORE=ON -DCUDA_nvrtc_LIBRARY=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libnvrtc.so.12.2.91`
+
 
 ### Windows
 
