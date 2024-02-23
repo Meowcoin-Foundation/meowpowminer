@@ -245,8 +245,16 @@ hash256 hash_final(const hash512& seed, const hash256& mix) noexcept
 epoch_context* create_epoch_context(uint32_t epoch_number, bool full)
 {
     static constexpr size_t context_alloc_size{sizeof(epoch_context)};
-    const uint32_t light_cache_num_items{calculate_light_cache_num_items(epoch_number)};
-    const uint32_t full_dataset_num_items{calculate_full_dataset_num_items(epoch_number)};
+
+    int meow_epoch = epoch_number;
+    if (epoch_number >= meowpow_dagchange_epoch)
+    {
+        // note, int truncates, it doesnt round, 10 == 10.5. So this is ok.
+        meow_epoch = epoch_number*4; //This should pass 4gb DAG size
+    }
+
+    const uint32_t light_cache_num_items{calculate_light_cache_num_items(meow_epoch)};
+    const uint32_t full_dataset_num_items{calculate_full_dataset_num_items(meow_epoch)};
     const size_t light_cache_size{static_cast<size_t>(light_cache_num_items) * kLight_cache_item_size};
 
     const size_t full_dataset_size{

@@ -44,6 +44,8 @@ constexpr static uint32_t kL1_cache_words = kL1_cache_size / sizeof(uint32_t);
 constexpr static uint32_t kFull_dataset_init_size = 1U << 30; // Meowcoin
 constexpr static uint32_t kFull_dataset_growth = 1 << 23;
 constexpr static uint32_t kFull_dataset_item_parents = 512;
+//MeowPow Dag Change
+constexpr static int meowpow_dagchange_epoch = 110;
 
 struct epoch_context
 {
