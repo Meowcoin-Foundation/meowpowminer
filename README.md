@@ -4,7 +4,7 @@ Meowpowminer is a fork of Ravencoin's [kawpowminer ](https://github.com/RavenCom
 
 Compared to kawpowminer, meowpowminer has the following differences:
 * DAG size at epoch 110 is >4GigaBytes
-* EPOCH duration is 12000 blocks
+* EPOCH duration is 7500 blocks
 * meowpowminer supports direct solo mining to meowcoind/meowcoin-qt without needing a stratum proxy
 * the random starting seeds are slightly different for uniqueness
 * improved detection of nVidia GPU memory size
