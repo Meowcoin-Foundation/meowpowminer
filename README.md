@@ -16,22 +16,25 @@ Meowpowminer is for use only on Meowcoin mainnet.
 ====
 
 A typical use of meowpowminer with a pool might look like:
-    meowpowminer.exe -U -P stratum+tcp://MW2dTN8pySSntNxHNWdoaiT777LRoTMSPR.2080CatBreeder:x@us-stratum.coinminerz.com:3346
+
+`meowpowminer.exe -U -P stratum+tcp://MW2dTN8pySSntNxHNWdoaiT777LRoTMSPR.2080CatBreeder:x@us-stratum.coinminerz.com:3346`
 
 A typical use of meowpowminer to solo mine direct to meowcoind/meowcoin-qt might look like:
-    meowpowminer.exe -U -P http://rpcusername:rpcpassword@meowcoin_node_ip_address:rpcport (specify miningaddress="youraddress" in meowcoin.conf)
+
+`meowpowminer.exe -U -P http://rpcusername:rpcpassword@meowcoin_node_ip_address:rpcport (specify miningaddress="youraddress" in meowcoin.conf)`
 
 ====
 
 Remember that you need to have CUDA installed on your system in order for meowpowminer to work. Get it from nVidia.
 
-Also, if you are solo mining direct to meowcoind or meowcoin-qt, before launching meowpowminer, make sure that:
-    * the node is fully syncd
-    * the node is listening on the RPC port (rpcport=xxx in meowcoin.conf)
-    * the node has miningaddress="youraddress" set in the meowcoin.conf file
-    * the node has rpcuser and rpcpassword set in the meowcoin.conf file.
-    * the node has rpcbind=0.0.0.0 or 127.0.0.1
-    * the node allows IP address of miners
+Also, if you are solo mining direct to `meowcoind` or `meowcoin-qt`, before launching `meowpowminer`, make sure that:
+- The node is fully synced.
+- The node is listening on the RPC port (`rpcport=xxx` in `meowcoin.conf`).
+- The node has `miningaddress="youraddress"` set in the `meowcoin.conf` file.
+- The node has `rpcuser` and `rpcpassword` set in the `meowcoin.conf` file.
+- The node has `rpcbind=0.0.0.0` or `127.0.0.1`.
+- The node allows the IP address of miners.
+
 
 
 
