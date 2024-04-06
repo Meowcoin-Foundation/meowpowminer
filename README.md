@@ -1,10 +1,9 @@
-# meowpowminer (ethminer fork with ProgPoW implementation)
+# meowpowminer (ethminer fork with MeowPow implementation)
 
 Meowpowminer is a fork of Ravencoin's [kawpowminer ](https://github.com/RavenCommunity/kawpowminer). Like kawpowminer, it is a derivative of Ethash enhanced with [Programmable Proof of Work](https://github.com/ifdefelse/progpow) for ASIC and FPGA resistance.
 
 Compared to kawpowminer, meowpowminer has the following differences:
 * DAG size at epoch 110 is >4GigaBytes
-* EPOCH duration is 7500 blocks
 * meowpowminer supports direct solo mining to meowcoind/meowcoin-qt without needing a stratum proxy
 * the random starting seeds are slightly different for uniqueness
 * improved detection of nVidia GPU memory size
@@ -17,13 +16,10 @@ Meowpowminer is for use only on Meowcoin mainnet.
 ====
 
 A typical use of meowpowminer with a pool might look like:
-    meowpowminer.exe -U -P stratum+tcp://ESDwJs2FX5zYoVnLQ7YuLZhmnsAcpKqMiq.worker@minersite.com:minerport
-
-A typical use of meowpowminer with a local stratum solo-mining proxy might look like:
-    meowpowminer.exe -U -P stratum+tcp://ESDwJs2FX5zYoVnLQ7YuLZhmnsAcpKqMiq.worker@127.0.0.1:3333
+    meowpowminer.exe -U -P stratum+tcp://MW2dTN8pySSntNxHNWdoaiT777LRoTMSPR.2080CatBreeder:x@us-stratum.coinminerz.com:3346
 
 A typical use of meowpowminer to solo mine direct to meowcoind/meowcoin-qt might look like:
-    meowpowminer.exe -U -P http://mynodeusername:mynodepassword@127.0.0.1:8819 (specify miningaddress="youraddress" in meowcoin.conf)
+    meowpowminer.exe -U -P http://rpcusername:rpcpassword@meowcoin_node_ip_address:rpcport (specify miningaddress="youraddress" in meowcoin.conf)
 
 ====
 
@@ -31,20 +27,23 @@ Remember that you need to have CUDA installed on your system in order for meowpo
 
 Also, if you are solo mining direct to meowcoind or meowcoin-qt, before launching meowpowminer, make sure that:
     * the node is fully syncd
-    * the node is listening on the RPC port (8819 for mainnet)
+    * the node is listening on the RPC port (rpcport=xxx in meowcoin.conf)
     * the node has miningaddress="youraddress" set in the meowcoin.conf file
     * the node has rpcuser and rpcpassword set in the meowcoin.conf file.
+    * the node has rpcbind=0.0.0.0 or 127.0.0.1
+    * the node allows IP address of miners
+
 
 
 ===============
 
-> evrprogpowpow miner with OpenCL, CUDA and stratum support
+> meowpowminer miner with OpenCL, CUDA and stratum support
 
-**meowpowminer** is an ProgPoW GPU mining worker: with meowpowminer you can mine Meowcoin, which relies on an ProgPoW-based Proof of Work thus including Ethereum ProgPoW and others. This is the actively maintained version of meowpowminer. It originates from the [ethminer](https://github.com/ethereum-mining/ethminer) project. Check the original [ProgPoW](https://github.com/ifdefelse/progpow) implementation and [EIP-1057](https://eips.ethereum.org/EIPS/eip-1057) for specification.
+**meowpowminer** is an MeowPow GPU mining worker: with meowpowminer you can mine Meowcoin, which relies on an ProgPoW-based Proof of Work thus including Ethereum ProgPoW and others. This is the actively maintained version of meowpowminer. It originates from the [ethminer](https://github.com/ethereum-mining/ethminer) project. Check the original [ProgPoW](https://github.com/ifdefelse/progpow) implementation and [EIP-1057](https://eips.ethereum.org/EIPS/eip-1057) for specification.
 
 ## Features
 
-* First commercial ProgPOW Meowcoin miner software for miners.
+* First commercial MeowPow miner software for miners.
 * OpenCL mining
 * Nvidia CUDA mining
 * realistic benchmarking against arbitrary epoch/DAG/blocknumber
@@ -78,7 +77,7 @@ accessible from command line. The meowpowminer is ready to go.
 
 | Builds | Release |
 | ------ | ------- |
-| Last   | [GitHub release](https://github.com/evrprogpoworg/meowpowminer/releases) 
+| Last   | [GitHub release](https://github.com/Meowcoin-Foundation/meowpowminer/releases) 
 
 
 If you have trouble with missing .dll or CUDA errors, [please install the latest version of CUDA drivers](https://developer.nvidia.com/cuda-downloads) or report to project maintainers.
@@ -93,14 +92,6 @@ For a full list of available command, please run:
 ```sh
 meowpowminer --help
 ```
-
-### Examples connecting to pools
-
-Connecting to [MinerMore Testnet](https://minermore.com):
-
-`./meowpowminer -P stratum+tcp://<wallet>.worker@rvnt.minermore.com:4505` or
-
-`meowpowminer.exe -P stratum+tcp://<wallet>.worker@rvnt.minermore.com:4505`
 
 ## Build
 
@@ -233,9 +224,9 @@ Because of the GDDR5X memory, which can't be fully utilized for Meowcoin mining 
 
 Only GCN 1.0 GPUs (78x0, 79x0, 270, 280), but in a different way. You'll see that on each new epoch (30K blocks), the hashrate will go down a little bit.
 
-### Can I still mine Meowcoin with my 2GB GPU?
+### Can I still mine Meowcoin with my 4GB GPU?
 
-Not really, your VRAM must be above the DAG size (Currently about 3 GB.) to get best performance. Without it severe hash loss will occur.
+Not really, your VRAM must be above the DAG size (Currently about 4.51 GB.) to get best performance. Without it severe hash loss will occur.
 
 ### What are the optimal launch parameters?
 
@@ -280,7 +271,7 @@ or
 error while loading shared libraries: libnvrtc.so.10.2: cannot open shared object file: No such file or directory
 ```
 
-You have to upgrade your Nvidia drivers. Install cuda 10.2.
+You have to upgrade your Nvidia drivers.
 
 
 [Amazon S3 is needed]: https://docs.travis-ci.com/user/uploading-artifacts/
