@@ -79,7 +79,7 @@ static std::string random_merge_src(std::string a, std::string b, uint32_t r)
     return "#error\n";
 }
 
-void ProgPow::calculate_fast_mod_data(uint32_t divisor, uint32_t& reciprocal, uint32_t& increment, uint32_t& shift)
+void calculate_fast_mod_data(uint32_t divisor, uint32_t& reciprocal, uint32_t& increment, uint32_t& shift)
 {
     if ((divisor & (divisor - 1)) == 0) {
         reciprocal = 1;
@@ -165,7 +165,7 @@ static std::string random_math_src(std::string d, std::string a, std::string b, 
     return "#error\n";
 }
 
-std::string ProgPow::getKern(std::string kernel_code, uint64_t prog_seed, kernel_t kern)
+std::string getKern(std::string kernel_code, uint64_t prog_seed, kernel_type kern)
 {
     std::stringstream ret;
     mix_rng_state state{prog_seed};
