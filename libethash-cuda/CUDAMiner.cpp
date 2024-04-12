@@ -407,7 +407,7 @@ void CUDAMiner::compileKernel(uint64_t period_seed, uint64_t dag_elms, CUfunctio
 {
     const char* name = "progpow_search";
 
-        std::string text = progpow::getKern(CUDAMiner_kernel, period_seed, progpow::KERNEL_CUDA);
+        std::string text = progpow::getKern(CUDAMiner_kernel, period_seed, progpow::kernel_type);
 
     std::string tmpDir;
 #ifdef _WIN32
