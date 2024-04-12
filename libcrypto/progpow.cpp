@@ -165,7 +165,7 @@ static std::string random_math_src(std::string d, std::string a, std::string b, 
     return "#error\n";
 }
 
-static std::string getKern(std::string kernel_code, uint64_t prog_seed, kernel_type kern)
+static std::string progpow::getKern(std::string kernel_code, uint64_t prog_seed, kernel_type kern)
 {
     std::stringstream ret;
     mix_rng_state state{prog_seed};
