@@ -6,6 +6,7 @@
 
 #include "progpow.hpp"
 #include "bitwise.hpp"
+#include <regex>
 
 namespace progpow
 {
@@ -78,6 +79,31 @@ static std::string random_merge_src(std::string a, std::string b, uint32_t r)
     return "#error\n";
 }
 
+void ProgPow::calculate_fast_mod_data(uint32_t divisor, uint32_t& reciprocal, uint32_t& increment, uint32_t& shift)
+{
+    if ((divisor & (divisor - 1)) == 0) {
+        reciprocal = 1;
+        increment = 0;
+        shift = 31U - clz(divisor);
+    }
+    else {
+        shift = 63U - clz(divisor);
+        const uint64_t N = 1ULL << shift;
+        const uint64_t q = N / divisor;
+        const uint64_t r = N - q * divisor;
+        if (r * 2 < divisor)
+        {
+            reciprocal = static_cast<uint32_t>(q);
+            increment = 1;
+        }
+        else
+        {
+            reciprocal = static_cast<uint32_t>(q + 1);
+            increment = 0;
+        }
+    }
+}
+
 NO_SANITIZE("unsigned-integer-overflow")
 static uint32_t random_math(uint32_t a, uint32_t b, uint32_t sel) noexcept
 {
@@ -139,7 +165,7 @@ static std::string random_math_src(std::string d, std::string a, std::string b, 
     return "#error\n";
 }
 
-std::string getKern(uint64_t prog_seed, kernel_type kern)
+std::string ProgPow::getKern(std::string kernel_code, uint64_t prog_seed, kernel_t kern)
 {
     std::stringstream ret;
     mix_rng_state state{prog_seed};
@@ -207,34 +233,12 @@ std::string getKern(uint64_t prog_seed, kernel_type kern)
         ret << "typedef struct __attribute__ ((aligned (16))) {uint32_t s[PROGPOW_DAG_LOADS];} "
                "dag_t;\n";
         ret << "\n";
-        ret << "// Inner loop for prog_seed " << prog_seed << "\n";
-        ret << "inline void progPowLoop(const uint32_t loop,\n";
-        ret << "        volatile uint32_t mix_arg[PROGPOW_REGS],\n";
-        ret << "        __global const dag_t *g_dag,\n";
-        ret << "        __local const uint32_t c_dag[PROGPOW_CACHE_WORDS],\n";
-        ret << "        __local uint64_t share[GROUP_SHARE],\n";
-        ret << "        const bool hack_false)\n";
     }
-    ret << "{\n";
 
-    ret << "dag_t data_dag;\n";
+    std::string kernel = std::regex_replace(kernel_code, std::regex("PROGPOW_REPLACE_HEADER"), ret.str());
+    ret.str(std::string());
+
     ret << "uint32_t offset, data;\n";
-    // Work around AMD OpenCL compiler bug
-    // See https://github.com/gangnamtestnet
-    if (kern == kernel_type::OpenCL)
-    {
-        ret << "uint32_t mix[PROGPOW_REGS];\n";
-        ret << "for(int i=0; i<PROGPOW_REGS; i++)\n";
-        ret << "    mix[i] = mix_arg[i];\n";
-    }
-
-    if (kern == kernel_type::Cuda)
-        ret << "const uint32_t lane_id = threadIdx.x & (PROGPOW_LANES-1);\n";
-    else
-    {
-        ret << "const uint32_t lane_id = get_local_id(0) & (PROGPOW_LANES-1);\n";
-        ret << "const uint32_t group_id = get_local_id(0) / PROGPOW_LANES;\n";
-    }
 
     // Global memory access
     // lanes access sequential locations
@@ -246,13 +250,13 @@ std::string getKern(uint64_t prog_seed, kernel_type kern)
     else
     {
         ret << "if(lane_id == (loop % PROGPOW_LANES))\n";
-        ret << "    share[group_id] = mix[0];\n";
+        ret << "    share[0].uint32s[group_id] = mix[0];\n";
         ret << "barrier(CLK_LOCAL_MEM_FENCE);\n";
-        ret << "offset = share[group_id];\n";
+        ret << "offset = share[0].uint32s[group_id];\n";
     }
     ret << "offset %= PROGPOW_DAG_ELEMENTS;\n";
     ret << "offset = offset * PROGPOW_LANES + (lane_id ^ loop) % PROGPOW_LANES;\n";
-    ret << "data_dag = g_dag[offset];\n";
+    ret << "dag_t data_dag = g_dag[offset];\n";
     ret << "// hack to prevent compiler from reordering LD and usage\n";
     if (kern == kernel_type::Cuda)
         ret << "if (hack_false) __threadfence_block();\n";
@@ -319,16 +323,10 @@ std::string getKern(uint64_t prog_seed, kernel_type kern)
         ret << random_merge_src(dst, src, state.rng());
     }
 
-    // Work around AMD OpenCL compiler bug
-    if (kern == kernel_type::OpenCL)
-    {
-        ret << "for(int i=0; i<PROGPOW_REGS; i++)\n";
-        ret << "    mix_arg[i] = mix[i];\n";
-    }
-    ret << "}\n";
     ret << "\n";
 
-    return ret.str();
+    kernel = std::regex_replace(kernel, std::regex("PROGPOW_REPLACE_MATH"), ret.str());
+    return kernel;
 }
 
 using mix_t = std::array<std::array<uint32_t, kRegs>, kLanes>;

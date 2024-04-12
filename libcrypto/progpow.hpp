@@ -56,7 +56,8 @@ private:
 };
 
 
-std::string getKern(uint64_t seed, kernel_type kern);
+static std::string getKern(std::string kernel_code, uint64_t seed, kernel_t kern);
+static void calculate_fast_mod_data(uint32_t divisor, uint32_t& reciprocal, uint32_t& increment, uint32_t& shift);
 
 ethash::hash256 hash_seed(const ethash::hash256& header_hash, uint64_t nonce) noexcept;
 ethash::hash256 hash_mix(const ethash::epoch_context& context, const uint32_t period, uint64_t seed);

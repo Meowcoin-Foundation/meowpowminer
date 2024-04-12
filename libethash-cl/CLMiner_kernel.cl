@@ -1,3 +1,5 @@
+PROGPOW_REPLACE_HEADER
+
 #define OPENCL_PLATFORM_UNKNOWN 0
 #define OPENCL_PLATFORM_NVIDIA 1
 #define OPENCL_PLATFORM_AMD 2
@@ -243,9 +245,10 @@ ethash_search(__global struct SearchResults* restrict g_output, __constant hash3
         // initialize mix for all lanes
         fill_mix(share[group_id].uint32s, lane_id, mix);
 
-#pragma unroll 1
-        for (uint32_t l = 0; l < PROGPOW_CNT_DAG; l++)
-            progPowLoop(l, mix, g_dag, c_dag, share[0].uint64s, hack_false);
+#pragma unroll 2
+        for (uint32_t loop = 0; loop < PROGPOW_CNT_DAG; loop++) {
+            PROGPOW_REPLACE_MATH
+		}
 
         // Reduce mix data to a per-lane 32-bit digest
         uint32_t mix_hash = FNV_OFFSET_BASIS;
@@ -564,27 +567,33 @@ static void SHA3_512(uint2* s, uint isolate)
     keccak_f1600_no_absorb(s, 8, isolate);
 }
 
+static uint fast_mod(uint a, uint4 d)
+{
+	const ulong t = a;
+	const uint q = ((t + d.y) * d.x) >> d.z;
+	return a - q * d.w;
+}
+
 __kernel void ethash_calculate_dag_item(
-    uint start, __global hash64_t const* g_light, __global hash64_t* g_dag, uint isolate)
+    uint start, __global hash64_t const* g_light, __global hash64_t* g_dag, uint isolate, uint dag_words, uint4 light_words)
 {
     uint const node_index = start + get_global_id(0);
-    if (node_index * sizeof(hash64_t) >= PROGPOW_DAG_BYTES)
+    if (node_index >= dag_words)
         return;
 
     hash200_t dag_node;
-    copy(dag_node.uint4s, g_light[node_index % LIGHT_WORDS].uint4s, 4);
+    copy(dag_node.uint4s, g_light[fast_mod(node_index, light_words)].uint4s, 4);
     dag_node.words[0] ^= node_index;
     SHA3_512(dag_node.uint2s, isolate);
 
     for (uint i = 0; i != ETHASH_DATASET_PARENTS; ++i)
     {
-        uint parent_index = fnv(node_index ^ i, dag_node.words[i % NODE_WORDS]) % LIGHT_WORDS;
+        uint parent_index = fast_mod(fnv(node_index ^ i, dag_node.words[i % NODE_WORDS]), light_words);
 
-        for (uint w = 0; w != 4; ++w)
-        {
-            dag_node.uint4s[w] = fnv4(dag_node.uint4s[w], g_light[parent_index].uint4s[w]);
-        }
-    }
-    SHA3_512(dag_node.uint2s, isolate);
-    copy(g_dag[node_index].uint4s, dag_node.uint4s, 4);
+        		for (uint w = 0; w != 4; ++w)
+			dag_node.uint4s[w] = fnv4(dag_node.uint4s[w], g_light[parent_index].uint4s[w]);
+	}
+
+	SHA3_512(dag_node.uint2s, isolate);
+	copy(g_dag[node_index].uint4s, dag_node.uint4s, 4);
 }
