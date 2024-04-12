@@ -262,14 +262,15 @@ CLMiner::CLMiner(unsigned _index, CLSettings _settings, DeviceDescriptor& _devic
 }
 
 #ifndef __clang__
+
         // Nvidia
         if (!m_deviceDescriptor.clNvCompute.empty())
         {
-            m_computeCapability =
-                m_deviceDescriptor.clNvComputeMajor * 10 + m_deviceDescriptor.clNvComputeMinor;
+            m_computeCapability = m_deviceDescriptor.clNvComputeMajor * 10 + m_deviceDescriptor.clNvComputeMinor;
             int maxregs = m_computeCapability >= 35 ? 72 : 63;
             sprintf(m_options, "-cl-nv-maxrregcount=%d", maxregs);
         }
+
 #endif
 
 CLMiner::~CLMiner()
@@ -787,7 +788,7 @@ bool CLMiner::initEpoch_internal()
         m_searchKernel.setArg(2, *m_dag);
 
         uint32_t light_words4[4];
-        ProgPow::calculate_fast_mod_data(m_epochContext.lightNumItems, light_words4[0], light_words4[1], light_words4[2]);
+        progpow::calculate_fast_mod_data(m_epochContext.lightNumItems, light_words4[0], light_words4[1], light_words4[2]);
         light_words4[3] = m_epochContext.lightNumItems;
 
         m_dagKernel.setArg(1, m_light[0]);
