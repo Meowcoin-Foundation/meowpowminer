@@ -84,10 +84,10 @@ void calculate_fast_mod_data(uint32_t divisor, uint32_t& reciprocal, uint32_t& i
     if ((divisor & (divisor - 1)) == 0) {
         reciprocal = 1;
         increment = 0;
-        shift = 31U - crypto::clz(divisor);
+        shift = 31U - crypto::clz32(divisor);
     }
     else {
-        shift = 63U - crypto::clz(divisor);
+        shift = 63U - crypto::clz32(divisor);
         const uint64_t N = 1ULL << shift;
         const uint64_t q = N / divisor;
         const uint64_t r = N - q * divisor;
