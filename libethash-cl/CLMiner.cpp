@@ -789,7 +789,7 @@ bool CLMiner::initEpoch_internal()
         m_searchKernel.setArg(2, *m_dag);
 
         uint32_t light_words4[4];
-        progpow::calculate_fast_mod_data(m_epochContext.lightNumItems, light_words4[0], light_words4[1], light_words4[2]);
+        calculate_fast_mod_data(m_epochContext.lightNumItems, light_words4[0], light_words4[1], light_words4[2]);
         light_words4[3] = m_epochContext.lightNumItems;
 
         m_dagKernel.setArg(1, m_light[0]);
