@@ -261,17 +261,6 @@ CLMiner::CLMiner(unsigned _index, CLSettings _settings, DeviceDescriptor& _devic
     m_settings.globalWorkSize = m_settings.localWorkSize * m_settings.globalWorkSizeMultiplier;
 }
 
-#ifndef __clang__
-    // Nvidia
-    if (!m_deviceDescriptor.clNvCompute.empty())
-    {
-        m_computeCapability = m_deviceDescriptor.clNvComputeMajor * 10 + m_deviceDescriptor.clNvComputeMinor;
-        int maxregs = (m_computeCapability >= 35) ? 72 : 63;
-        sprintf(m_options, "-cl-nv-maxrregcount=%d", maxregs);
-    }
-#endif
-
-
 CLMiner::~CLMiner()
 {
     stopWorking();
@@ -752,6 +741,19 @@ bool CLMiner::initEpoch_internal()
     try
     {
         char options[256] = {0};
+
+#ifndef __clang__
+
+        // Nvidia
+        if (!m_deviceDescriptor.clNvCompute.empty())
+        {
+            m_computeCapability = m_deviceDescriptor.clNvComputeMajor * 10 + m_deviceDescriptor.clNvComputeMinor;
+            int maxregs = m_computeCapability >= 35 ? 72 : 63;
+            sprintf(m_options, "-cl-nv-maxrregcount=%d", maxregs);
+        }
+
+#endif
+
 
         m_dagItems = m_epochContext->full_dataset_num_items;
         std::string device_name = m_deviceDescriptor.clName;
