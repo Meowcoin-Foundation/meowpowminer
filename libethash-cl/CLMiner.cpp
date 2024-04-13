@@ -262,16 +262,15 @@ CLMiner::CLMiner(unsigned _index, CLSettings _settings, DeviceDescriptor& _devic
 }
 
 #ifndef __clang__
-
-        // Nvidia
-        if (!m_deviceDescriptor.clNvCompute.empty())
-        {
-            m_computeCapability = m_deviceDescriptor.clNvComputeMajor * 10 + m_deviceDescriptor.clNvComputeMinor;
-            int maxregs = m_computeCapability >= 35 ? 72 : 63;
-            sprintf(m_options, "-cl-nv-maxrregcount=%d", maxregs);
-        }
-
+    // Nvidia
+    if (!m_deviceDescriptor.clNvCompute.empty())
+    {
+        m_computeCapability = m_deviceDescriptor.clNvComputeMajor * 10 + m_deviceDescriptor.clNvComputeMinor;
+        int maxregs = (m_computeCapability >= 35) ? 72 : 63;
+        sprintf(m_options, "-cl-nv-maxrregcount=%d", maxregs);
+    }
 #endif
+
 
 CLMiner::~CLMiner()
 {
